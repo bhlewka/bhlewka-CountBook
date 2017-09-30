@@ -14,12 +14,7 @@ public class CountBook {
         this.counterArray = new ArrayList<Counter>();
     }
 
-    public void newCounter(String name, Integer initialValue){
-        // We want this class to somehow create a new counter that
-        // appears on our list of counters
-
-        // This creates the new counter and appends it to the array of counters
-        Counter newCounter = new Counter(name, initialValue);
-        this.counterArray.add(newCounter);
+    public void append(Counter counter){
+        this.counterArray.add(counter);
     }
 }

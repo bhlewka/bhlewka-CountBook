@@ -11,7 +11,7 @@ public class Counter {
     private Date date;
     private Integer currentValue;
     private Integer initialValue;
-    private String comment = "";
+    private String comment = "Test Comment";
 
     public Counter(String name, Integer initialValue) {
         // Initialize the Counter
@@ -30,25 +30,39 @@ public class Counter {
         this.comment = comment;
     }
 
-    public void increment(){
+    public Integer getCurrentValue(){
+        return this.currentValue;
+    }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public String getComment() {
+        return this.comment;
+    }
+
+    public void increment(){
+        this.currentValue += 1;
     }
 
     public void decrement(){
-
+        if(currentValue > 0)
+            this.currentValue -= 1;
     }
 
     public void reset(){
-
+        this.currentValue = this.initialValue;
     }
 
-    public void viewDetails(){
-
-    }
-
-    public void editCount(){}
-
-    public void editComment(){}
+    public void viewDetails(){}
+    public void setName(){}
+    public void setCount(){}
+    public void setComment(){}
     public void delete(){}
 }
 

@@ -5,10 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CountBook countBook;
+    //private CountBook countBook;
+    private ArrayList<Counter> countBook;
+    private SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create the first counter object
-        this.countBook = new CountBook();
+        this.countBook = new ArrayList<Counter>();
 
     }
     /** This will create a new counter object, as well as display it on the screen */
@@ -26,36 +34,54 @@ public class MainActivity extends AppCompatActivity {
         // Type in their name and initial value then hit a new button?
         // Naa, we can make it just add a new counter to the bottom first
 
-        this.countBook.newCounter("test", 0);
+        Counter counter;
 
 
         // This intent takes us to the DisplayMessageActivity page thing
         // Lets rename it to counterDetails
         Intent intent = new Intent(this, DisplayCounterDetails.class);
 
-        Bundle nameVal = new Bundle();
+        Bundle bundle = new Bundle();
 
         // Get the name value
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
+        EditText editText = (EditText) findViewById(R.id.nameInput);
+        String name = editText.getText().toString();
 
         // Get the initial vlaue
-        EditText editText2 = (EditText) findViewById(R.id.editText2);
-        String message2 = editText2.getText().toString();
+        EditText editText2 = (EditText) findViewById(R.id.valueInput);
+        String initialValue = editText2.getText().toString();
 
+        // Ensure input thing is a digit
+        // How do we go about this?
+        // We use a number box, and ensure no blanks are entered basically
+        try{
+            Integer value = Integer.valueOf(initialValue);
+        }
+        catch(Exception e) {
+            return;
+        }
+
+        Integer value = Integer.valueOf(initialValue);
         // Get the optional comment, not required
-        EditText editText3 = (EditText) findViewById(R.id.editText3);
-        String message3 = editText2.getText().toString();
+        EditText editText3 = (EditText) findViewById(R.id.commentInput);
+        String comment = editText3.getText().toString();
 
-        nameVal.putString("name", message);
-        nameVal.putString("initialValue", message2);
-        nameVal.putString("comment", message3);
+        counter = new Counter(name, value, comment);
+        // Adds the counter to the main activities memory thing
+        this.countBook.add(counter);
 
-        // Put the name,value bundle into the activity
-        // No no bad bad, this is autistic, we have all the information we
-        // need to make the counter right here, and pass that in instead
-        intent.putExtras(nameVal);
+        // Convert the counter to a Gson object
+        Gson gson = new Gson();
+        String counter2 = gson.toJson(counter);
+
+        bundle.putString("counter",counter2);
+
+
+        intent.putExtras(bundle);
 
         startActivity(intent);
     }
+
+    // This will update the screen after a new counter is added to the list
+    public void updateScreen(){}
 }
