@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Countbook</string>
+    <string name="app_name">bhlewka-Countbook</string>
     <string name="edit_message">Enter a Message</string>
     <string name="button_send">Send</string>
     <string name="counter_name">Counter ???</string>
