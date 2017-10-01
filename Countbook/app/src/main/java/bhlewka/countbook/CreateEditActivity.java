@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,81 +21,46 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class DisplayCounterDetails extends AppCompatActivity {
-
+public class CreateEditActivity extends AppCompatActivity {
     private static final String FILENAME = "file.sav";
     private Counter counter;
     private ArrayList<Counter> countBook;
-    private Integer position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // I'd like to think this sets what activity we are moving to
-        setContentView(R.layout.activity_display_details);
-
-        loadFromFile();
-        // Get the Intent that started this activity and extract the string
+        setContentView(R.layout.activity_create_edit);
         Intent intent = getIntent();
-        this.position = intent.getExtras().getInt("position");
-        this.counter = countBook.get(this.position);
-
-
-        this.updateScreen();
-
+        loadFromFile();
+        this.counter = countBook.get(intent.getExtras().getInt("position"));
     }
 
-    // Updates the screen
-    private void updateScreen() {
-        String name = this.counter.getName();
-        Integer value = this.counter.getCurrentValue();
-        String comment = this.counter.getComment();
+    public void updateValues(View view){
+        EditText editName = (EditText) findViewById(R.id.editName);
+        this.counter.setName(editName.getText().toString());
 
+        EditText editValue = (EditText) findViewById(R.id.editValue);
+        String intValue = editValue.getText().toString();
 
-        // Capture the layout's TextView and set the string as its text
-        TextView counterName = (TextView) findViewById(R.id.counterName);
-        counterName.setText(name);
+        try{
+            Integer value = Integer.valueOf(intValue);
+        }
+        catch(Exception e) {
+            return;
+        }
 
-        // We need to convert value to a string
-        TextView counterCount = (TextView) findViewById(R.id.counterCount);
-        counterCount.setText(value.toString());
-//
-        TextView counterComment = (TextView) findViewById(R.id.counterComment);
-        counterComment.setText(comment);
-    }
+        Integer value = Integer.valueOf(intValue);
+        this.counter.setValue(value);
 
-    public void incrementButton(View view) {
-        this.counter.increment();
-        this.updateScreen();
-        this.saveInFile();
-    }
+        EditText editComment = (EditText) findViewById(R.id.editComment);
+        this.counter.setComment(editComment.getText().toString());
 
-    public void decrementButton(View view) {
-        this.counter.decrement();
-        this.updateScreen();
-        this.saveInFile();
-    }
-
-    public void resetButton(View view) {
-        this.counter.reset();
-        this.updateScreen();
-        this.saveInFile();
-
-    }
-
-    public void editButton(View view) {
-        Intent intent = new Intent(this, CreateEditActivity.class);
-        intent.putExtra("position", position);
-        startActivity(intent);
-        finish();
-    }
-
-    public void deleteButton(View view) {
-        this.countBook.remove(counter);
         saveInFile();
         finish();
-    }
 
+        // https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
+        // September 30th, 2017
+    }
     private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -135,5 +100,4 @@ public class DisplayCounterDetails extends AppCompatActivity {
             throw new RuntimeException();
         }
     }
-
 }

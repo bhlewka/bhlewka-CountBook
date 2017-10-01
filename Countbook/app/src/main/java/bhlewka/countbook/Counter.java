@@ -38,8 +38,11 @@ public class Counter {
         return this.name;
     }
 
-    public Date getDate() {
-        return this.date;
+    public String getDate() {
+        String formattedDate = String.valueOf(this.date.getYear() + 1900) + "-";
+        formattedDate += String.format("%02d", this.date.getMonth() + 1) + "-";
+        formattedDate += String.format("%02d", this.date.getDate());
+        return formattedDate;
     }
 
     public String getComment() {
@@ -48,21 +51,35 @@ public class Counter {
 
     public void increment(){
         this.currentValue += 1;
+        this.date = new Date();
     }
 
     public void decrement(){
         if(currentValue > 0)
             this.currentValue -= 1;
+            this.date = new Date();
     }
 
     public void reset(){
         this.currentValue = this.initialValue;
+        this.date = new Date();
     }
 
-    public void viewDetails(){}
-    public void setName(){}
-    public void setCount(){}
-    public void setComment(){}
-    public void delete(){}
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setValue(Integer count){
+        this.currentValue = count;
+        this.initialValue = count;
+    }
+    public void setComment(String comment){
+        this.comment = comment;
+    }
+
+    @Override
+    public String toString(){
+        String date = this.getDate();
+        return this.name + "     -     " + this.currentValue + "    -    " + date;
+    }
 }
 
