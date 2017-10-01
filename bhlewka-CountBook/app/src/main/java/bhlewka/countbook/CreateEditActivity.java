@@ -36,27 +36,37 @@ public class CreateEditActivity extends AppCompatActivity {
     }
 
     public void updateValues(View view){
+
+
         EditText editName = (EditText) findViewById(R.id.editName);
-        this.counter.setName(editName.getText().toString());
+
+        if (!editName.getText().toString().equals(""))
+            this.counter.setName(editName.getText().toString());
 
         EditText editValue = (EditText) findViewById(R.id.editValue);
         String intValue = editValue.getText().toString();
+
+        EditText editComment = (EditText) findViewById(R.id.editComment);
+        if (!editComment.getText().toString().equals(""))
+            this.counter.setComment(editComment.getText().toString());
 
         try{
             Integer value = Integer.valueOf(intValue);
         }
         catch(Exception e) {
+            saveInFile();
+            finish();
             return;
         }
 
+
         Integer value = Integer.valueOf(intValue);
         this.counter.setValue(value);
-
-        EditText editComment = (EditText) findViewById(R.id.editComment);
-        this.counter.setComment(editComment.getText().toString());
-
         saveInFile();
         finish();
+
+//
+//
 
         // https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
         // September 30th, 2017

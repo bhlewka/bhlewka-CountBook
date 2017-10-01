@@ -50,6 +50,7 @@ public class DisplayCounterDetails extends AppCompatActivity {
         String name = this.counter.getName();
         Integer value = this.counter.getCurrentValue();
         String comment = this.counter.getComment();
+        String date = this.counter.getDate();
 
 
         // Capture the layout's TextView and set the string as its text
@@ -62,6 +63,9 @@ public class DisplayCounterDetails extends AppCompatActivity {
 //
         TextView counterComment = (TextView) findViewById(R.id.counterComment);
         counterComment.setText(comment);
+
+        TextView counterDate = (TextView) findViewById(R.id.counterDate);
+        counterDate.setText(date);
     }
 
     public void incrementButton(View view) {

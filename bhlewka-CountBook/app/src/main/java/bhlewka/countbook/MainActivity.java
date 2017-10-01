@@ -28,8 +28,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Initialize the
     private static final String FILENAME = "file.sav";
-    //private CountBook countBook;
     private ArrayList<Counter> countBook;
     private ArrayAdapter<Counter> adapter;
     private ListView counterList;
