@@ -28,7 +28,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Initialize the
+    // Initialize the variables that we will be using
+
     private static final String FILENAME = "file.sav";
     private ArrayList<Counter> countBook;
     private ArrayAdapter<Counter> adapter;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button newCounter = (Button) findViewById(R.id.button3);
 
+        // This is the listener for the new button press
+        // Calls the newCounter method
         newCounter.setOnClickListener(new View.OnClickListener(){
             public void onClick (View view){
                 setResult(RESULT_OK);
@@ -49,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Create the first counter object
+        // Initialize the counter array, and the counter listview
         this.countBook = new ArrayList<Counter>();
         counterList = (ListView) findViewById(R.id.list);
 
         // Create a message handling object as an anonymous class.
+        // load from file is called before and after to ensure data is up to date
         AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 //displayDetails(v, position);
@@ -65,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         counterList.setOnItemClickListener(mMessageClickedHandler);
         // from https://developer.android.com/guide/topics/ui/declaring-layout.html#AdapterViews
+        // September 30th, 2017
 
     }
     // Create on start method
+    // Initializes the array adapter which is used to display our list of counters
     @Override
     protected void onStart(){
         super.onStart();
@@ -77,11 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /** This will create a new counter object, as well as display it on the screen */
-
+    // This will display the details of a counter
+    // Passes position in so the activity can load from file and access the proper counter
     public void displayDetails(View view, Integer position){
-
-        // Wait but how do we get that specific object in the list?
 
         Intent intent = new Intent(this, DisplayCounterDetails.class);
 
@@ -90,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // This is the load from file function from our lonely twitter
+    // Its called often, as it is how we have persistent data
+    // May not be the most efficient, especially with larger files
+    // Fragments possible the answer? Or activityWithResult, however
+    // I could not figure it out
     private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -112,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // This is the save from file function from our lonely twitter
+    // Its called often, as it is how we have persistent data
+    // May not be the most efficient, especially with larger files
+    // Fragments possible the answer? Or activityWithResult, however
+    // I could not figure it out
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
@@ -133,19 +147,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    // This function is called after the new counter button is pressed, and takes the values written in
+    // to create a new counter
+    // It ensures a proper integer is put in
+    // This is a small 32bit int however, and could have been created as a long, or double
+    // But in the scope of this app, if they increment decrement by 1, I don't see
+    // a user requiring much larger integers
     public void newCounter(View view) {
-        // Should this function take us to a new screen that allows the user to
-        // Type in their name and initial value then hit a new button?
-        // Naa, we can make it just add a new counter to the bottom first
 
         Counter counter;
-
-
-        // This intent takes us to the DisplayMessageActivity page thing
-        // Lets rename it to counterDetails
-        //Intent intent = new Intent(this, DisplayCounterDetails.class);
-
 
         // Get the name value
         EditText editText = (EditText) findViewById(R.id.nameInput);
@@ -174,20 +184,6 @@ public class MainActivity extends AppCompatActivity {
         // Adds the counter to the main activities memory thing
         this.countBook.add(counter);
 
-        // This down here will be required for the update setting
-
-        // Convert the counter to a Gson object
-//        Gson gson = new Gson();
-//        String counter2 = gson.toJson(counter);
-//
-//        bundle.putString("counter",counter2);
-//
-//
-//        intent.putExtras(bundle);
-//
-//        startActivity(intent);
     }
 
-    // This will update the screen after a new counter is added to the list
-    //public void updateScreen(){}
 }

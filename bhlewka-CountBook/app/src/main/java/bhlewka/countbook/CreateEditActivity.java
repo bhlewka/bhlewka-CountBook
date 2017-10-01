@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CreateEditActivity extends AppCompatActivity {
+    // declare the variables we will need for this edit activity
     private static final String FILENAME = "file.sav";
     private Counter counter;
     private ArrayList<Counter> countBook;
@@ -35,6 +36,9 @@ public class CreateEditActivity extends AppCompatActivity {
         this.counter = countBook.get(intent.getExtras().getInt("position"));
     }
 
+    // Takes values set in the boxes and edits the counter with those new values
+    // Allows the user to leave certain values blank and not affect the code
+    // Ensures a proper integer is entered
     public void updateValues(View view){
 
 
@@ -71,6 +75,7 @@ public class CreateEditActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
         // September 30th, 2017
     }
+    // ""
     private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -90,6 +95,7 @@ public class CreateEditActivity extends AppCompatActivity {
         }
     }
 
+    // ""
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,

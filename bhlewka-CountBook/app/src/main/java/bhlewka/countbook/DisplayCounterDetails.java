@@ -23,6 +23,11 @@ import java.util.ArrayList;
 
 public class DisplayCounterDetails extends AppCompatActivity {
 
+    // Initialize the values we require in the new activity
+    // These are the same as the values needed from the last activity
+    // therefore this seems like a very inneficient way to do things
+    // I could have used an interface, but I didnt realize you can inherit
+    // and implement an interface a the same time
     private static final String FILENAME = "file.sav";
     private Counter counter;
     private ArrayList<Counter> countBook;
@@ -68,18 +73,22 @@ public class DisplayCounterDetails extends AppCompatActivity {
         counterDate.setText(date);
     }
 
+    // increments a counter by 1, sets the date, updates the screen to reflect these changes
     public void incrementButton(View view) {
         this.counter.increment();
         this.updateScreen();
         this.saveInFile();
     }
 
+    // decrements a counter by 1, sets the date, updates the screen to reflect these changes
     public void decrementButton(View view) {
         this.counter.decrement();
         this.updateScreen();
         this.saveInFile();
     }
 
+    // resets the counter back to the set initial value
+    // sets the date, updates the screen to reflect these changes
     public void resetButton(View view) {
         this.counter.reset();
         this.updateScreen();
@@ -87,6 +96,9 @@ public class DisplayCounterDetails extends AppCompatActivity {
 
     }
 
+    // takes us to the edit activity screen
+    // This could also have been used to create a new button, but I wasnt too sure how
+    // to use both activites for the same thing
     public void editButton(View view) {
         Intent intent = new Intent(this, CreateEditActivity.class);
         intent.putExtra("position", position);
@@ -94,12 +106,17 @@ public class DisplayCounterDetails extends AppCompatActivity {
         finish();
     }
 
+    // removes the counter from the list
     public void deleteButton(View view) {
         this.countBook.remove(counter);
         saveInFile();
         finish();
     }
 
+    // Once again, the loadfile from lonely twitter
+    // this appears in all 3 of my activity classes, so it would have been wise to implement
+    // these functions as an interface
+    // but alas, live and learn
     private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -119,6 +136,10 @@ public class DisplayCounterDetails extends AppCompatActivity {
         }
     }
 
+    // Once again, the savefile from lonely twitter
+    // this appears in all 3 of my activity classes, so it would have been wise to implement
+    // these functions as an interface
+    // but alas, live and learn
     private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
